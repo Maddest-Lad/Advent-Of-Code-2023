@@ -11,16 +11,16 @@ import (
 
 func main() {
 	// replacer for converting the number style
-	string_replacer := strings.NewReplacer(
-		"one", "1",
-		"two", "2",
-		"three", "3",
-		"four", "4",
-		"five", "5",
-		"six", "6",
-		"seven", "7",
-		"eight", "8",
-		"nine", "9",
+	number_replacer := strings.NewReplacer(
+		"one", "o1e",
+		"two", "t2o",
+		"three", "t3e",
+		"four", "f4r",
+		"five", "f5e",
+		"six", "s6x",
+		"seven", "s7n",
+		"eight", "e8t",
+		"nine", "n9e",
 	)
 
 	var sum int
@@ -38,8 +38,9 @@ func main() {
 		// Get the Text Line and Convert it to a Slice of Runes
 		var line string = scanner.Text()
 
-		// Perform string replacements
-		line = string_replacer.Replace(line)
+		// Replace Each Instance
+		line = number_replacer.Replace(line)
+		line = number_replacer.Replace(line)
 
 		// Convert to Runes
 		runes := []rune(line)
