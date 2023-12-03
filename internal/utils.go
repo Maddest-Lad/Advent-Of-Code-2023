@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func Get_scanner_from_args() *bufio.Scanner {
+func GetScannerFromArgs() *bufio.Scanner {
 
 	// Read The Input File
 	filePath := os.Args[1]
