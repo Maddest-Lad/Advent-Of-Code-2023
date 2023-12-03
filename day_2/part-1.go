@@ -23,6 +23,8 @@ func main() {
 
 	// Vars
 	var games []diceGame
+	var sum int        // Part 1
+	var powerTotal int // Part 2
 
 	// Build Structs From Input
 	for scanner.Scan() {
@@ -30,16 +32,31 @@ func main() {
 		games = append(games, parseGame(line))
 	}
 
-	// Solve Puzzle
-	var sum int
-
 	for _, game := range games {
+		// Solve First Puzzle
 		if isValidGame(game) {
 			sum += game.gameNumber
 		}
+
+		// Second Puzzle
+		powerTotal += getPowerOfGame(game)
 	}
 
-	fmt.Println(sum)
+	fmt.Println("Part 1:", "The Sum of All Possible Games is", sum)
+	fmt.Println("Part 2:", "The Power of All Possible Games is", powerTotal)
+
+}
+
+func getPowerOfGame(game diceGame) int {
+	var red, green, blue int //Max
+
+	for _, round := range game.rounds {
+		red = utils.MaxOf(red, round.red)
+		green = utils.MaxOf(green, round.green)
+		blue = utils.MaxOf(blue, round.blue)
+	}
+
+	return red * green * blue
 }
 
 // The Elf would first like to know which games would have been possible if the bag contained only
