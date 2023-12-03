@@ -59,7 +59,6 @@ func getPowerOfGame(game diceGame) int {
 	return red * green * blue
 }
 
-// The Elf would first like to know which games would have been possible if the bag contained only
 // 12 red cubes, 13 green cubes, and 14 blue cubes
 func isValidGame(game diceGame) bool {
 	for _, round := range game.rounds {
