@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"internal/utils"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
