@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"internal/utils"
+	"strconv"
+	"unicode"
 )
 
 func main() {
 	// Create Representation of Intput Matrix
 	var grid [][]rune
+	var sum int = 0
 
 	// Read Puzzle Input Into Grid
 	scanner := utils.GetScannerFromArgs()
@@ -28,10 +31,36 @@ func main() {
 	// Logic to Scan For Chars
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[0]); j++ {
-			var neighbors = getNeighbors(grid, i, j)
-			fmt.Printf("grid[%d][%d] %s: %s \n", i, j, string(grid[i][j]), string(neighbors))
+
+			if unicode.IsDigit(grid[i][j]) {
+				adjacentSymbol := false
+				lastDigitIndex := j
+
+				for k := j; k < len(grid[0]); k++ {
+					neighbors := getNeighbors(grid, i, k)
+
+					if unicode.IsDigit(grid[i][k]) {
+						lastDigitIndex = k
+
+						fmt.Println(string(neighbors), string(grid[i][k]))
+						if containsSymbol(neighbors) {
+							adjacentSymbol = true
+						}
+					} else {
+						break
+					}
+				}
+
+				if adjacentSymbol {
+					val, _ := strconv.Atoi(string(grid[i][j : lastDigitIndex+1]))
+					sum += val
+				}
+				fmt.Println(string(grid[i][j:lastDigitIndex+1]), adjacentSymbol)
+				j = lastDigitIndex
+			}
 		}
 	}
+	fmt.Println("The sum is", sum)
 }
 
 func getNeighbors(grid [][]rune, row int, col int) []rune {
@@ -58,4 +87,13 @@ func getNeighbors(grid [][]rune, row int, col int) []rune {
 	}
 
 	return neighbors
+}
+
+func containsSymbol(slice []rune) bool {
+	for _, character := range slice {
+		if unicode.IsSymbol(character) {
+			return true
+		}
+	}
+	return false
 }
