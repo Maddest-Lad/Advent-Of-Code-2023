@@ -28,30 +28,34 @@ func main() {
 	// Logic to Scan For Chars
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[0]); j++ {
-			fmt.Println(string(grid[i][j]))
 			var neighbors = getNeighbors(grid, i, j)
-			var _ = neighbors
+			fmt.Printf("grid[%d][%d] %s: %s \n", i, j, string(grid[i][j]), string(neighbors))
 		}
 	}
 }
 
 func getNeighbors(grid [][]rune, row int, col int) []rune {
-	var neighbors []rune
+	neighbors := make([]rune, 0)
 
-	// Prevent Out of Index Access
-	rowLimit := len(grid)
-	colLimit := len(grid[0])
+	numRows := len(grid)
+	numCols := len(grid[0])
 
-	// Using Min/Max to Avoid Boundaries
-	for i := utils.MaxOf(0, row-1); i < utils.MinOf(row+1, rowLimit); i++ {
-		for j := utils.MaxOf(0, col-1); j < utils.MinOf(col+1, colLimit); j++ {
-			fmt.Printf("[%d][%d] \n", i, j)
-			if i != row && j != col {
-				// Ignore Middle
-				neighbors = append(neighbors, grid[i][j])
-			}
+	// Define relative positions of the neighbors
+	positions := [][2]int{
+		{-1, -1}, {-1, 0}, {-1, 1}, // Top Left, Top, Top Right
+		{0, -1}, {0, 1}, // Left, <Skipping Middle>,Right
+		{1, -1}, {1, 0}, {1, 1}, // Bottom Left, Bottom, Bottom Right
+	}
+
+	for _, pos := range positions {
+		newRow := row + pos[0]
+		newCol := col + pos[1]
+
+		// Check if new row and column indices are within bounds
+		if newRow >= 0 && newRow < numRows && newCol >= 0 && newCol < numCols {
+			neighbors = append(neighbors, grid[newRow][newCol])
 		}
 	}
-	fmt.Printf("grid[%d][%d] %s: %s", row, col, string(grid[row][col]), string(neighbors))
+
 	return neighbors
 }
