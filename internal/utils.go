@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"math"
 	"os"
 )
 
@@ -36,4 +37,8 @@ func MinOf(vars ...int) int {
 		}
 	}
 	return min
+}
+
+func PowInt(x, y int) int {
+	return int(math.Pow(float64(x), float64(y)))
 }
