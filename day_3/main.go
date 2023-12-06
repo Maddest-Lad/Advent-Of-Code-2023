@@ -31,31 +31,25 @@ func main() {
 	// Logic to Scan For Chars
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[0]); j++ {
-
+			// First Digit of The Number
 			if unicode.IsDigit(grid[i][j]) {
-				adjacentSymbol := false
 				lastDigitIndex := j
+				allNeighbors := make([]rune, 0)
 
-				for k := j; k < len(grid[0]); k++ {
-					neighbors := getNeighbors(grid, i, k)
-
-					if unicode.IsDigit(grid[i][k]) {
-						lastDigitIndex = k
-
-						fmt.Println(string(neighbors), string(grid[i][k]))
-						if containsSymbol(neighbors) {
-							adjacentSymbol = true
-						}
-					} else {
-						break
-					}
+				// Iterate Through the Entire Number
+				for k := j; k < len(grid[0]) && unicode.IsDigit(grid[i][k]); k++ {
+					lastDigitIndex = k
+					allNeighbors = append(allNeighbors, getNeighbors(grid, i, k)...) // Variadic Operator (Unpacking / * in Python)
 				}
 
-				if adjacentSymbol {
+				//println(string(grid[i][j:lastDigitIndex+1]), string(allNeighbors), containsSymbol(allNeighbors))
+
+				if containsSymbol(allNeighbors) {
 					val, _ := strconv.Atoi(string(grid[i][j : lastDigitIndex+1]))
 					sum += val
 				}
-				fmt.Println(string(grid[i][j:lastDigitIndex+1]), adjacentSymbol)
+
+				// Skip Remainder of Valid Number
 				j = lastDigitIndex
 			}
 		}
@@ -91,7 +85,7 @@ func getNeighbors(grid [][]rune, row int, col int) []rune {
 
 func containsSymbol(slice []rune) bool {
 	for _, character := range slice {
-		if unicode.IsSymbol(character) {
+		if !unicode.IsDigit(character) && character != '.' {
 			return true
 		}
 	}
