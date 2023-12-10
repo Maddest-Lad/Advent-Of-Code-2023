@@ -6,7 +6,6 @@ import (
 	"regexp"
 	"slices"
 	"strconv"
-	"strings"
 )
 
 type scratchCard struct {
@@ -40,26 +39,9 @@ func parseCard(cardString string) scratchCard {
 
 	// Convert String Data To Integers
 	cardNumber, _ := strconv.Atoi(matches[2])
-	winningNumbers, cardNumbers := parseNumbers(matches[3]), parseNumbers(matches[4])
+	winningNumbers, cardNumbers := utils.ParseNumbers(matches[3]), utils.ParseNumbers(matches[4])
 
 	return scratchCard{cardNumber: cardNumber, cardNumbers: cardNumbers, winningNumbers: winningNumbers}
-}
-
-// Convert a String Such as "83 86 6 31 17 9 48 53" to an Array of Valid Integers
-func parseNumbers(numberString string) []int {
-	numbers := make([]int, 0)
-
-	// Remove Spaces Around Data
-	numberString = strings.TrimSpace(numberString)
-	numberString = strings.Replace(numberString, "  ", " ", -1) // Edge Case For Segments Like "  6"
-
-	// Extract Numbers
-	for _, numString := range strings.Split(numberString, " ") {
-		numInt, _ := strconv.Atoi(numString)
-		numbers = append(numbers, numInt)
-	}
-
-	return numbers
 }
 
 func getMatchingNumbers(card scratchCard) int {
